@@ -25,5 +25,5 @@ npm install
 npm run dev
 ```
 
-## Run it with Docker
+## Run it local with Docker
 
