@@ -1,2 +1,76 @@
-version: '3.5'
+version: '3.8'
+
+services:
+  frontend:
+    build: ./nebulaestack/frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - net_mern
+
+  backend:
+    build: ./nebulaestack/backend
+    ports:
+      - "5050:5050"
+    networks:
+      - net_mern
+    environment:
+      - MONGO_URI: mongodb://mongo:27017/
+    depends_on:
+      - mongo
+      # - db
+      # - postgres_db
+      # - redis
+      # - couchdb
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - net_mern
+    volumes:
+      - mongo-data:/data/db
+      # - ./data:/data/db
+
+  # db:
+  #   image: mysql:5.7
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: tu_base_datos
+  #     MYSQL_USER: usuario
+  #     MYSQL_PASSWORD: contraseña
+
+  # postgres_db:
+  #   image: postgres:13
+  #   environment:
+  #     POSTGRES_DB: otra_base_datos
+  #     POSTGRES_USER: otro_usuario
+  #     POSTGRES_PASSWORD: otra_contraseña
+  #   ports:
+  #     - "5432:5432"
+
+    # redis:
+    #   image: redis:6.2
+    #   ports:
+    #     - "6379:6379"
+
+  # couchdb:
+  #   image: couchdb:2.3.1
+  #   ports:
+  #     - "5984:5984"
+  #   environment:
+  #     COUCHDB_USER: admin
+  #     COUCHDB_PASSWORD: contraseña
+  #   volumes:
+  #     - couchdb_data:/opt/couchdb/data
+
+  networks:
+    net_mern: bridge
+
+    volumes:
+      mongo-data:
+        driver: local
+      # couchdb_data:
+
 
